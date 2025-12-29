@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: stagger-backend
+    env: node
+    plan: starter
+    repo: https://github.com/<your-username>/<your-repo>
+    branch: main
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false
