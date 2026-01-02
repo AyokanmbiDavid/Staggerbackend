@@ -11,5 +11,6 @@ authRoutes.post("/logout", logout);
 
 // Private route (Checks if user is authenticated)
 authRoutes.get("/me", protectRoute, getMe);
+router.get("/users", protectRoute, getUsers);
 
 export default authRoutes;
