@@ -1,0 +1,9 @@
+Category,Action,Method,Endpoint,Body Requirements
+Auth,Signup,POST,/api/auth/signup,"username, email, password"
+Auth,Login,POST,/api/auth/login,"email, password"
+Auth,Get Profile,GET,/api/auth/me,Requires Bearer Token
+Chat,Get History,GET,/api/messages/:id,:id is the other user's ID
+Chat,Send,POST,/api/messages/send,"receiverId, text, messageType"
+Chat,Edit,PUT,/api/messages/edit/:id,":id is message ID, body: text"
+Chat,Delete,DELETE,/api/messages/delete/:id,:id is message ID
+Chat,Clear All,DELETE,/api/messages/clear/:id,:id is other user's ID
