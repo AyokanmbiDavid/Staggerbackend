@@ -1,5 +1,5 @@
 import express from "express";
-import { signup, login, logout, getMe } from "../controllers/auth.controller.js";
+import { signup, login, logout, getMe, getUsers } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 
 const authRoutes = express.Router();
@@ -11,6 +11,6 @@ authRoutes.post("/logout", logout);
 
 // Private route (Checks if user is authenticated)
 authRoutes.get("/me", protectRoute, getMe);
-router.get("/users", protectRoute, getUsers);
+authRoutes.get("/users", protectRoute, getUsers);
 
 export default authRoutes;
