@@ -14,7 +14,7 @@ const server = http.createServer(app); // Create HTTP server for Socket.io
 // 1. Setup Socket.io with CORS
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Your Vite frontend URL
+    origin: "*", // Your Vite frontend URL
     methods: ["GET", "POST"],
   },
 });
