@@ -124,3 +124,63 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// ... existing imports
+
+// Add these to your auth.controller.js
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update fields if they were provided
+    if (username) user.username = username;
+    if (email) user.email = email;
+
+    // If password is being changed, hash it
+    if (password) {
+      if (password.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+      }
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      profilePic: updatedUser.profilePic,
+    });
+  } catch (error) {
+    console.log("Error in updateProfile controller", error.message);
+    if (error.code === 11000) {
+        return res.status(400).json({ message: "Username or Email already exists" });
+    }
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Optional: Delete user's messages as well if you have a Message model
+    // await Message.deleteMany({ $or: [{ senderId: userId }, { receiverId: userId }] });
+
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.log("Error in deleteAccount controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
